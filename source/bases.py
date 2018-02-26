@@ -9,6 +9,23 @@ import string
 # string.ascii_letters is ascii_lowercase + ascii_uppercase
 # string.printable is digits + ascii_letters + punctuation + whitespace
 
+def get_decode_key(base):
+    iter_num = 0
+    base_key = {}
+    base_string = string.digits + string.ascii_lowercase
+    for i in base_string[:base]:
+        base_key[i] = iter_num
+        iter_num += 1
+
+    return base_key
+
+def get_encode_key(base):
+    base_key = {}
+    base_string = string.digits + string.ascii_lowercase
+    for i in range(0, base):
+        base_key[i] = base_string[i]
+
+    return base_key
 
 def decode(digits, base):
     """Decode given digits in given base to number in base 10.
@@ -17,12 +34,18 @@ def decode(digits, base):
     return: int -- integer representation of number (in base 10)"""
     # Handle up to base 36 [0-9a-z]
     assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
-    # TODO: Decode digits from binary (base 2)
-    # ...
-    # TODO: Decode digits from hexadecimal (base 16)
-    # ...
-    # TODO: Decode digits from any base (2 up to 36)
-    # ...
+    base_key = get_decode_key(base)
+
+    power = len(str(digits)) - 1
+    number = 0
+
+    digits = digits.lower()
+
+    for digit in digits:
+        number += int(base_key.get(digit)) * (base ** power)
+        power -= 1
+
+    return number
 
 
 def encode(number, base):
@@ -34,12 +57,21 @@ def encode(number, base):
     assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
     # Handle unsigned numbers only for now
     assert number >= 0, 'number is negative: {}'.format(number)
-    # TODO: Encode number in binary (base 2)
-    # ...
-    # TODO: Encode number in hexadecimal (base 16)
-    # ...
-    # TODO: Encode number in any base (2 up to 36)
-    # ...
+    base_key = get_encode_key(base)
+
+    output_number = ''
+
+    if number == 0:
+        return 0
+
+    while number != 0:
+        remainder = int(number % base)
+        number = int(number / base)
+        num = base_key.get(remainder)
+        output_number = str(num) + output_number
+
+    return output_number
+
 
 
 def convert(digits, base1, base2):
@@ -59,6 +91,7 @@ def convert(digits, base1, base2):
     # ...
     # TODO: Convert digits from any base to any base (2 up to 36)
     # ...
+    return encode(decode(digits, base1), base2)
 
 
 def main():
@@ -79,3 +112,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    print(encode(0, 2))
