@@ -9,6 +9,7 @@ import string
 # string.ascii_letters is ascii_lowercase + ascii_uppercase
 # string.printable is digits + ascii_letters + punctuation + whitespace
 
+
 def get_decode_key(base):
     iter_num = 0
     base_key = {}
@@ -18,6 +19,7 @@ def get_decode_key(base):
         iter_num += 1
 
     return base_key
+
 
 def get_encode_key(base):
     base_key = {}
@@ -71,7 +73,6 @@ def encode(number, base):
         output_number = str(num) + output_number
 
     return output_number
-
 
 
 def convert(digits, base1, base2):
