@@ -4,6 +4,29 @@ def contains(text, pattern):
     """Return a boolean indicating whether pattern occurs in text."""
     assert isinstance(text, str), 'text is not a string: {}'.format(text)
     assert isinstance(pattern, str), 'pattern is not a string: {}'.format(text)
+
+    if text == '':
+        return False
+    elif pattern == '':
+        return True
+
+    if text[0] == pattern[0]:
+        if len(pattern) == 1:
+            return True
+        for i in range(1, len(pattern)):
+            if len(text) < len(pattern):
+                return False
+
+            if text[i] == pattern[i] and i == len(pattern) - 1:
+                return True
+            elif text[i] == pattern[i]:
+                continue
+            else:
+                text = text[i:]
+                return contains(text, pattern)
+    else:
+        text = text[1:]
+        return contains(text, pattern)
     # TODO: Implement contains here (iteratively and/or recursively)
 
 
@@ -12,7 +35,18 @@ def find_index(text, pattern):
     or None if not found."""
     assert isinstance(text, str), 'text is not a string: {}'.format(text)
     assert isinstance(pattern, str), 'pattern is not a string: {}'.format(text)
-    # TODO: Implement find_index here (iteratively and/or recursively)
+    iterator = 0
+    index = 0
+
+    for char in text:
+        if char == pattern[iterator]:
+            if char == pattern[iterator] and iterator == len(pattern) - 1:
+                print('nice')
+                return index - iterator
+            iterator += 1
+        else:
+            iterator = 0
+        index += 1
 
 
 def find_all_indexes(text, pattern):
@@ -26,12 +60,12 @@ def find_all_indexes(text, pattern):
 def test_string_algorithms(text, pattern):
     found = contains(text, pattern)
     print('contains({!r}, {!r}) => {}'.format(text, pattern, found))
-    # TODO: Uncomment these lines after you implement find_index
+    # # TODO: Uncomment these lines after you implement find_index
     index = find_index(text, pattern)
     print('find_index({!r}, {!r}) => {}'.format(text, pattern, index))
-    # TODO: Uncomment these lines after you implement find_all_indexes
-    indexes = find_all_indexes(text, pattern)
-    print('find_all_indexes({!r}, {!r}) => {}'.format(text, pattern, indexes))
+    # # TODO: Uncomment these lines after you implement find_all_indexes
+    # indexes = find_all_indexes(text, pattern)
+    # print('find_all_indexes({!r}, {!r}) => {}'.format(text, pattern, indexes))
 
 
 def main():

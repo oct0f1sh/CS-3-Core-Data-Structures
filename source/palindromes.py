@@ -1,6 +1,7 @@
 #!python
 
 import string
+import re
 # Hint: Use these string constants to ignore capitalization and/or punctuation
 # string.ascii_lowercase is 'abcdefghijklmnopqrstuvwxyz'
 # string.ascii_uppercase is 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -18,15 +19,32 @@ def is_palindrome(text):
 
 
 def is_palindrome_iterative(text):
-    # TODO: implement the is_palindrome function iteratively here
-    pass
+    text = text.lower()
+    text = re.sub('[^a-z]+', '', text)
+    reverse = list()
+
+    for char in text:
+        if char not in string.ascii_lowercase:
+            continue
+        else:
+            char = char.lower()
+            reverse.insert(0, char)
+
+    reverse = ''.join(reverse)
+
+    if str(reverse) == text:
+        return True
+    else:
+        return False
     # once implemented, change is_palindrome to call is_palindrome_iterative
     # to verify that your iterative implementation passes all tests
 
 
 def is_palindrome_recursive(text, left=None, right=None):
-    # TODO: implement the is_palindrome function recursively here
-    pass
+    text = text.lower()
+    text = re.sub('[^a-z]+', '', text)
+
+
     # once implemented, change is_palindrome to call is_palindrome_recursive
     # to verify that your iterative implementation passes all tests
 
