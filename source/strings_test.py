@@ -101,6 +101,9 @@ class StringsTest(unittest.TestCase):
         # TODO: Write more negative test cases with assert equal list statements
         # ...
 
+    def test_something(self):
+        assert find_index('aaaaab', 'aaab') == 2
+
     def test_find_all_indexes_with_complex_patterns(self):
         # Difficult test cases (examples) with complex patterns
         assert find_all_indexes('ababc', 'abc') == [2]  # overlapping prefix

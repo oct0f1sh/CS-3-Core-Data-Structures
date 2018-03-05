@@ -27,7 +27,6 @@ def contains(text, pattern):
     else:
         text = text[1:]
         return contains(text, pattern)
-    # TODO: Implement contains here (iteratively and/or recursively)
 
 
 def find_index(text, pattern):
