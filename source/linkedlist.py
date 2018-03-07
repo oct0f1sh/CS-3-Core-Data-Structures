@@ -104,6 +104,12 @@ class LinkedList(object):
         new_node = Node(item)
         indx = 0
 
+        if index == 0:
+            new_node = Node(item)
+            new_node.next = self.head
+            self.head = new_node
+            return
+
         while node.next is not None:
             if indx + 1 == index:
                 new_node.next = node.next
