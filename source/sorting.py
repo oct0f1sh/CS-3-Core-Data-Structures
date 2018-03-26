@@ -141,18 +141,16 @@ def merge_sort(items):
     # TODO: Sort each half by recursively calling merge sort
     # TODO: Merge sorted halves into one list in sorted order
     if len(items) <= 1:
-        return items
+        return
 
     size = len(items) // 2
     side1 = items[:size]
     side2 = items[size:]
 
-    left = merge_sort(side1)
-    right = merge_sort(side2)
+    merge_sort(side1)
+    merge_sort(side2)
 
-    srtd = merge(left, right)]
-
-    return srtd
+    items[:] = merge(side1, side2)
 
 
 def partition(items, low, high):
