@@ -5,7 +5,29 @@ def is_sorted(items):
     """Return a boolean indicating whether given items are in sorted order.
     TODO: Running time: ??? Why and under what conditions?
     TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Check that all adjacent items are in order, return early if not
+    prev_item = None
+
+    # if items contains 0 or 1 element
+    if len(items) <= 1:
+        return True
+
+    # loop over items and check if previous item is less than current item
+    for item in items:
+        # check if there is a value for previous item
+        # if not, set it and move on to next item in items
+        if prev_item is None:
+            prev_item = item
+            continue
+        # if previous item has a value, continue checking if each previous item
+        # is less than next item
+        else:
+            if prev_item <= item:
+                prev_item = item
+                continue
+            else:
+                return False
+
+    return True
 
 
 def bubble_sort(items):
@@ -15,6 +37,18 @@ def bubble_sort(items):
     TODO: Memory usage: ??? Why and under what conditions?"""
     # TODO: Repeat until all items are in sorted order
     # TODO: Swap adjacent items that are out of order
+    is_sorted_order = False
+
+    while not is_sorted_order:
+        is_sorted_order = True
+        for i in range(len(items) - 1):
+            if items[i] > items[i + 1]:
+                # swap the values using that thing we learned in class
+                items[i], items[i+1] = items[i+1], items[i]
+
+                is_sorted_order = False
+
+    return items
 
 
 def selection_sort(items):
@@ -37,6 +71,7 @@ def insertion_sort(items):
     # TODO: Insert it in sorted order in front of items
 
 
+
 def merge(items1, items2):
     """Merge given lists of items, each assumed to already be in sorted order,
     and return a new list containing all items in sorted order.
@@ -45,10 +80,35 @@ def merge(items1, items2):
     # TODO: Repeat until one list is empty
     # TODO: Find minimum item in both lists and append it to new list
     # TODO: Append remaining items in non-empty list to new list
+    sorted_list = []
 
+    items1_index = 0
+    items2_index = 0
+
+    # start by comparing both the indexes at 0
+    while items1_index < len(items1) and items2_index < len(items2):
+        # if item1 at iterator is less than or equal to item2 at iterator
+        # append item1 to sorted list and increase its iterator by one
+        if items1[items1_index] <= items2[items2_index]:
+            sorted_list.append(items1[items1_index])
+            items1_index += 1
+        # if item1 is greater than item2 at iterator
+        # append item2 to sorted list and increase its iterator by one
+        else:
+            sorted_list.append(items2[items2_index])
+            items2_index += 1
+    
+    # once one list has been iterated over fully, you must append the
+    # remaining contents (alread sorted) of the other list to your sorted list
+    if items1_index != len(items1):
+        sorted_list.extend(items1[items1_index:])
+    else:
+        sorted_list.extend(items2[items2_index:])
+
+    return sorted_list
 
 def split_sort_merge(items):
-    """Sort given items by splitting list into two approximately equal halves,
+    """Sort given items by splitting jlist into two approximately equal halves,
     sorting each with an iterative sorting algorithm, and merging results into
     a list in sorted order.
     TODO: Running time: ??? Why and under what conditions?
@@ -56,6 +116,19 @@ def split_sort_merge(items):
     # TODO: Split items list into approximately equal halves
     # TODO: Sort each half using any other sorting algorithm
     # TODO: Merge sorted halves into one list in sorted order
+    split_list_length = len(items) // 2
+    items1 = items[split_list_length:]
+    items2 = items[:split_list_length]
+    
+    if is_sorted(items):
+        return merge(items1, items2)
+    else:
+        sorted_items1 = bubble_sort(items1)
+        sorted_items2 = bubble_sort(items2)
+
+        sorted_list = merge(sorted_items1, sorted_items2)
+
+        return sorted_list
 
 
 def merge_sort(items):
@@ -67,6 +140,19 @@ def merge_sort(items):
     # TODO: Split items list into approximately equal halves
     # TODO: Sort each half by recursively calling merge sort
     # TODO: Merge sorted halves into one list in sorted order
+    if len(items) <= 1:
+        return items
+
+    size = len(items) // 2
+    side1 = items[:size]
+    side2 = items[size:]
+
+    left = merge_sort(side1)
+    right = merge_sort(side2)
+
+    srtd = merge(left, right)]
+
+    return srtd
 
 
 def partition(items, low, high):
@@ -127,7 +213,7 @@ def random_ints(count=20, min=1, max=50):
     return [random.randint(min, max) for _ in range(count)]
 
 
-def test_sorting(sort=bubble_sort, num_items=20, max_value=50):
+def test_sorting(sort=merge_sort, num_items=20, max_value=50):
     """Test sorting algorithms with a small list of random items."""
     # Create a list of items randomly sampled from range [1...max_value]
     items = random_ints(num_items, 1, max_value)
@@ -137,7 +223,7 @@ def test_sorting(sort=bubble_sort, num_items=20, max_value=50):
     # Change this sort variable to the sorting algorithm you want to test
     # sort = bubble_sort
     print('Sorting items with {}(items)'.format(sort.__name__))
-    sort(items)
+    items = sort(items)
     print('Sorted items:  {!r}'.format(items))
     print('Sorted order?  {!r}'.format(is_sorted(items)))
 
